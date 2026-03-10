@@ -1,0 +1,6 @@
+# Ignore configuration files and secrets
+.asana-token
+
+# Node / tooling (if added)
+node_modules/
+.DS_Store

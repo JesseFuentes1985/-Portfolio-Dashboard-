@@ -1,0 +1,36 @@
+name: Sync Asana data
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 10 * * 1' # Every Monday at 10:00 UTC
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch Asana data
+        env:
+          ASANA_TOKEN: ${{ secrets.ASANA_TOKEN }}
+        run: npm run fetch-asana
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/asana.json
+          git diff --quiet || (
+            git commit -m "chore: update Asana data snapshot"
+            git push
+          )

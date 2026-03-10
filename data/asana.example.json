@@ -1,0 +1,9 @@
+{
+  "lastSynced": "2026-03-09T00:00:00.000Z",
+  "tasksCompleted": 92,
+  "workspaces": 1,
+  "projects": [
+    { "name": "Example project", "completed": 33, "inProgress": 5, "status": "On track" }
+  ],
+  "weeklyCompleted": [8, 12, 10, 14, 13, 11, 14]
+}

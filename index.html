@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jesse Fuentes — Portfolio Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="container topbar__content">
+        <a class="brand" href="#">
+          <span class="brand__name">Jesse Fuentes</span>
+          <span class="brand__tag">Portfolio Dashboard</span>
+        </a>
+        <nav class="nav">
+          <a href="#projects">Projects</a>
+          <a href="#asana">Asana</a>
+          <a href="#about">About</a>
+          <a class="btn-outline" href="https://github.com/JesseFuentes1985" target="_blank" rel="noopener">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero" id="hero">
+        <div class="hero__left">
+          <h1 class="hero__title">A live view of what I ship.</h1>
+          <p class="hero__lead">
+            A lightweight dashboard that surfaces the work I'm shipping every week. It pulls from Asana, shows project status, and gives a modern snapshot for hiring managers.
+          </p>
+          <div class="hero__actions">
+            <a class="btn" href="#projects">See projects</a>
+            <a class="btn btn-ghost" href="#asana">Asana status</a>
+          </div>
+        </div>
+        <div class="hero__visual" aria-hidden="true">
+          <div class="card">
+            <div class="card__header">
+              <div>
+                <p class="label">This week</p>
+                <h2 class="stat" id="stat-completed">—</h2>
+              </div>
+              <span class="badge" id="stat-change">—</span>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="completedChart" height="120"></canvas>
+            </div>
+            <p class="caption">Tasks completed in the last 7 days (mock data).</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <header class="section__header">
+          <h2>Projects</h2>
+          <p class="section__subtitle">A quick snapshot of the work I've done across roles and organizations.</p>
+        </header>
+
+        <div class="grid" id="projectGrid">
+          <!-- Project cards injected by app.js -->
+        </div>
+      </section>
+
+      <section class="section" id="asana">
+        <header class="section__header">
+          <h2>Asana activity</h2>
+          <p class="section__subtitle">
+            This section is designed to show your work in Asana. Add an API token and a small server-side helper to keep it secure.
+          </p>
+        </header>
+
+        <div class="asana-summary">
+          <div class="asana-card">
+            <h3>Last sync</h3>
+            <p id="asana-last-sync">n/a</p>
+          </div>
+          <div class="asana-card">
+            <h3>Tasks completed</h3>
+            <p id="asana-tasks-completed">n/a</p>
+          </div>
+          <div class="asana-card">
+            <h3>Workspaces</h3>
+            <p id="asana-workspaces">n/a</p>
+          </div>
+          <div class="asana-card asana-card--action">
+            <h3>Set up Asana</h3>
+            <p>To show real data, follow the steps in <code>README.md</code> to configure an API token and enable the fetch task.</p>
+          </div>
+        </div>
+
+        <div class="asana-details">
+          <div class="table-container">
+            <table class="table" id="asanaTable">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Status</th>
+                  <th>Completed</th>
+                  <th>In Progress</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows injected by app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <header class="section__header">
+          <h2>About</h2>
+          <p class="section__subtitle">Why this dashboard exists and how to keep it updated.</p>
+        </header>
+
+        <div class="prose">
+          <p>
+            This site is built to show a snapshot of my work across projects and to make it easy for hiring teams to see what I'm shipping.
+          </p>
+          <p>
+            It uses a static frontend and can be hosted on GitHub Pages. For live Asana data, the recommended approach is to fetch Asana data on a secure backend (GitHub Actions / serverless function) and commit a small JSON snapshot.
+          </p>
+          <p>
+            The <strong>data</strong> folder (not yet created) can be used to store a <code>asana.json</code> file that powers the visualizations without exposing an API token.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <p>Built with HTML, CSS, and vanilla JavaScript. Hosted on GitHub Pages.</p>
+        <a href="https://github.com/JesseFuentes1985/-Portfolio-Dashboard-" target="_blank" rel="noopener" class="footer__link">View source</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-dashboard",
+  "version": "1.0.0",
+  "description": "A GitHub Pages dashboard for showing projects and Asana activity.",
+  "type": "module",
+  "scripts": {
+    "fetch-asana": "node scripts/fetch-asana.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
