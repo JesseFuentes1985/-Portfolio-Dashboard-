@@ -38,8 +38,19 @@ async function fetchAsana() {
 
   const me = await res.json();
 
+  // Debug: show the authenticated user and available workspaces.
+  console.log("Authenticated Asana user:", me.data?.name ?? me.data?.email ?? "(unknown)");
+  console.log(
+    "Workspaces:",
+    (me.data?.workspaces ?? []).map((w) => ({ id: w.gid, name: w.name }))
+  );
+
   const workspaceId = me.data.workspaces?.[0]?.gid;
   const workspaceCount = Array.isArray(me.data.workspaces) ? me.data.workspaces.length : 0;
+
+  if (!workspaceId) {
+    throw new Error("Unable to determine Asana workspace ID for the authenticated user.");
+  }
 
   const today = new Date();
   const lastWeek = new Date(today);
@@ -47,18 +58,30 @@ async function fetchAsana() {
 
   const completedSince = lastWeek.toISOString();
 
-  const tasksRes = await fetch(
-    `https://app.asana.com/api/1.0/tasks?assignee=me&completed_since=${encodeURIComponent(
-      completedSince
-    )}&opt_fields=name,completed,projects&limit=100`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const tasksUrl = new URL("https://app.asana.com/api/1.0/tasks");
+  tasksUrl.searchParams.set("assignee", "me");
+  tasksUrl.searchParams.set("workspace", workspaceId);
+  tasksUrl.searchParams.set("completed_since", completedSince);
+  tasksUrl.searchParams.set("opt_fields", "name,completed,projects");
+  tasksUrl.searchParams.set("limit", "100");
+
+  console.log("Using Asana URL:", tasksUrl.toString());
+  console.log("Using workspaceId:", workspaceId);
+
+  const tasksRes = await fetch(tasksUrl.toString(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!tasksRes.ok) {
+    const body = await tasksRes.text();
+    console.error("Asana request details:", {
+      url: tasksUrl.toString(),
+      status: tasksRes.status,
+      statusText: tasksRes.statusText,
+      body,
+    });
     throw new Error(`Asana tasks request failed: ${tasksRes.status} ${tasksRes.statusText}`);
   }
 
