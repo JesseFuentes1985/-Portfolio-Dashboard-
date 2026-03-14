@@ -19,6 +19,8 @@ if (!token) {
   process.exit(1);
 }
 
+console.log("ASANA_TOKEN present: (hidden)");
+
 const outPath = path.resolve(process.cwd(), "data", "asana.json");
 
 /**
@@ -44,9 +46,18 @@ async function fetchAsana() {
     "Workspaces:",
     (me.data?.workspaces ?? []).map((w) => ({ id: w.gid, name: w.name }))
   );
+  console.log("Full /users/me response:", JSON.stringify(me, null, 2));
 
-  const workspaceId = me.data.workspaces?.[0]?.gid;
-  const workspaceCount = Array.isArray(me.data.workspaces) ? me.data.workspaces.length : 0;
+  const workspaceId = me.data?.workspaces?.[0]?.gid;
+  const workspaceCount = Array.isArray(me.data?.workspaces) ? me.data.workspaces.length : 0;
+
+  if (!workspaceId) {
+    throw new Error(
+      "Unable to determine Asana workspace ID for the authenticated user. " +
+        "Make sure your token has access to at least one workspace. " +
+        "Response from /users/me: " + JSON.stringify(me)
+    );
+  }
 
   if (!workspaceId) {
     throw new Error("Unable to determine Asana workspace ID for the authenticated user.");
