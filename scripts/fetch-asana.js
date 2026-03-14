@@ -13,13 +13,13 @@
 import fs from "fs";
 import path from "path";
 
-const token = process.env.ASANA_TOKEN;
+const token = process.env.ASANA_TOKEN ?? process.env.ASANA_TOKEN_API;
 if (!token) {
-  console.error("Missing ASANA_TOKEN environment variable.");
+  console.error("Missing ASANA_TOKEN or ASANA_TOKEN_API environment variable.");
   process.exit(1);
 }
 
-console.log("ASANA_TOKEN present: (hidden)");
+console.log("ASANA token present (hidden)");
 
 const outPath = path.resolve(process.cwd(), "data", "asana.json");
 
